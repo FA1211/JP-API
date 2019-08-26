@@ -11,6 +11,7 @@ class Player(models.Model):
 
 class Session(models.Model):
     date = models.DateField()
+    players = models.ManyToManyField(Player)
     balance = models.IntegerField(default=0)
 
     def __str__(self):
@@ -18,6 +19,6 @@ class Session(models.Model):
 
 
 class SessionResult(models.Model):
-    player = models.OneToOneField(Player, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='results')
     result = models.IntegerField(default=0)

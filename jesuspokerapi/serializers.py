@@ -15,12 +15,10 @@ class SessionResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SessionResult
-        fields = ('id', 'session', 'player', 'result')
+        fields = ('id', 'player', 'result')
 
 
 class SessionSerializer(serializers.ModelSerializer):
-    results = SessionResultSerializer(many=True)
-
     class Meta:
         model = Session
-        fields = ('id', 'date', 'results', 'balance')
+        fields = ('id', 'date', 'balance')
