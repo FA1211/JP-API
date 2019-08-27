@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from .models import Player, Session, SessionResult
-from .serializers import PlayerSerializer, SessionSerializer, SessionResultSerializer
+from .serializers import PlayerSerializer, SessionSerializer, SessionResultSerializer, PlayerScoreSerializer
 
 
 # Create your views here.
@@ -58,3 +58,10 @@ class SessionResultView(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class AllScoresView(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerScoreSerializer
+    sessions = SessionSerializer
+

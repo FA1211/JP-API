@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from rest_framework.relations import StringRelatedField
 
 from .models import Player, Session, SessionResult
@@ -16,6 +17,17 @@ class SessionResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = SessionResult
         fields = ('id', 'player', 'result')
+
+
+class PlayerScoreSerializer(serializers.ModelSerializer):
+    def get_total_score(self, obj):
+        return obj.get_total_score()
+
+    total_score = SerializerMethodField()
+
+    class Meta:
+        model = Player
+        fields = ('id', 'name', 'total_score')
 
 
 class SessionSerializer(serializers.ModelSerializer):
