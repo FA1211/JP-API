@@ -1,5 +1,7 @@
+from django.db.models import Sum
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Player, Session, SessionResult
@@ -22,7 +24,7 @@ class PlayerView(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class SessionView(viewsets.ModelViewSet):
+class FormView(viewsets.ModelViewSet):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
@@ -60,8 +62,18 @@ class SessionResultView(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class AllScoresView(viewsets.ModelViewSet):
+class PlayerScoreView(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerScoreSerializer
-    sessions = SessionSerializer
+    filter_backends = [filters.OrderingFilter]
 
+    @action(detail=False)
+    def get_max(self, request):
+        max_player = Player.objects.all().annotate(total_score=Sum('sessions__result')).order_by('-total_score')[0]
+        serialized = self.get_serializer(max_player)
+        return Response(serialized.data, status=status.HTTP_200_OK)
+
+
+class SessionView(viewsets.ModelViewSet):
+    queryset = Session.objects.all()
+    serializer_class = Session
