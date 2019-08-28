@@ -5,7 +5,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Player, Session, SessionResult
-from .serializers import PlayerSerializer, SessionSerializer, SessionResultSerializer, PlayerScoreSerializer
+from .serializers import PlayerSerializer, SessionSerializer, SessionResultSerializer, PlayerScoreSerializer, \
+    PlayerSessionSerializer
 
 
 # Create your views here.
@@ -69,11 +70,14 @@ class PlayerScoreView(viewsets.ModelViewSet):
 
     @action(detail=False)
     def get_max(self, request):
+        sessions = SessionResultSerializer
         max_player = Player.objects.all().annotate(total_score=Sum('sessions__result')).order_by('-total_score')[0]
-        serialized = self.get_serializer(max_player)
+        serialized = PlayerSessionSerializer(max_player)
         return Response(serialized.data, status=status.HTTP_200_OK)
 
 
 class SessionView(viewsets.ModelViewSet):
     queryset = Session.objects.all()
-    serializer_class = Session
+    serializer_class = SessionSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields=['date']

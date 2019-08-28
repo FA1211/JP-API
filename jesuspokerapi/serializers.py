@@ -19,6 +19,13 @@ class SessionResultSerializer(serializers.ModelSerializer):
         fields = ('id', 'player', 'result')
 
 
+class SessionSerializer(serializers.ModelSerializer):
+    results = SessionResultSerializer(many=True)
+    class Meta:
+        model = Session
+        fields = ('id', 'date', 'balance','results')
+
+
 class PlayerScoreSerializer(serializers.ModelSerializer):
     def get_total_score(self, obj):
         return obj.get_total_score()
@@ -30,7 +37,8 @@ class PlayerScoreSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'total_score')
 
 
-class SessionSerializer(serializers.ModelSerializer):
+class PlayerSessionSerializer(serializers.ModelSerializer):
+    sessions = SessionResultSerializer(many=True)
     class Meta:
-        model = Session
-        fields = ('id', 'date', 'balance')
+        model = Player
+        fields = ('id', 'name', 'sessions')
