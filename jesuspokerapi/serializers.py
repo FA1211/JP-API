@@ -20,7 +20,7 @@ class SessionResultSerializer(serializers.ModelSerializer):
 
 
 class SessionSerializer(serializers.ModelSerializer):
-    results = SessionResultSerializer(many=True)
+    results = SessionResultSerializer(many=True, required=False)
     class Meta:
         model = Session
         fields = ('id', 'date', 'balance','results')
