@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 
@@ -17,6 +18,7 @@ class Player(models.Model):
 
 class Session(models.Model):
     date = models.DateField()
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_sessions", null=True )
     players = models.ManyToManyField(Player)
     balance = models.IntegerField(default=0)
 
