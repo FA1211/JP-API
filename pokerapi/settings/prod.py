@@ -1,0 +1,1 @@
+from pokerapi.settings.common import *
