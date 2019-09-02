@@ -10,7 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import environ
 import os
+
+
+# Set up environment variables
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -82,9 +92,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_API_APP_ID']
+SOCIAL_AUTH_FACEBOOK_KEY = env('FACEBOOK_API_APP_ID')
 # os.environ.get('FACEBOOK_API_APP_ID')
-SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_API_APP_SECRET']
+SOCIAL_AUTH_FACEBOOK_SECRET = env('FACEBOOK_API_APP_SECRET')
 # str(os.environ.get('FACEBOOK_API_APP_SECRET'))
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from facebook. Email is not sent by default, to get it, you must request the email permission:
@@ -110,11 +120,18 @@ WSGI_APPLICATION = 'pokerapi.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+dbusername = env('dbusername')
+dbpass = env('dbpass')
+dbhostname = env('dbhostname')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': dbusername,
+        'PASSWORD': dbpass,
+        'HOST': dbhostname,
+        'PORT': '5432',
     }
 }
 
