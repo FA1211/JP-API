@@ -80,7 +80,10 @@ class PlayerScoreView(viewsets.ModelViewSet):
     @action(detail=False)
     def get_max(self, request):
         sessions = SessionResultSerializer
-        max_player = Player.objects.all().annotate(total_score=Sum('sessions__result')).order_by('-total_score')[0]
+        try:
+            max_player = Player.objects.all().annotate(total_score=Sum('sessions__result')).order_by('-total_score')[0]
+        except IndexError:
+            return Response({"error":"No players in database"}, status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE)
         serialized = PlayerSessionSerializer(max_player)
         return Response(serialized.data, status=status.HTTP_200_OK)
 

@@ -36,6 +36,7 @@ class SocialLoginView(generics.GenericAPIView):
             user = backend.do_auth(access_token)
 
         except HTTPError as error:
+            print(error)
             return Response({
                 "error": {
                     "access_token": "Invalid token",

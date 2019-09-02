@@ -92,9 +92,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = env('FACEBOOK_API_APP_ID')
+SOCIAL_AUTH_FACEBOOK_KEY = int(env('FB_API_APP_ID'))
 # os.environ.get('FACEBOOK_API_APP_ID')
-SOCIAL_AUTH_FACEBOOK_SECRET = env('FACEBOOK_API_APP_SECRET')
+SOCIAL_AUTH_FACEBOOK_SECRET = str((env('FB_API_APP_SECRET')))
 # str(os.environ.get('FACEBOOK_API_APP_SECRET'))
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from facebook. Email is not sent by default, to get it, you must request the email permission:
