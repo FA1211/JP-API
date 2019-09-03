@@ -2,7 +2,7 @@ from django.db.models import Sum
 from rest_framework import viewsets, status, filters
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from jesuspokerapi.models import Player, Session, SessionResult
@@ -14,6 +14,8 @@ from jesuspokerapi.serializers import PlayerSerializer, SessionSerializer, Sessi
 # Create your views here.
 
 class PlayerView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [TokenAuthentication]
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
 
@@ -28,7 +30,7 @@ class PlayerView(viewsets.ModelViewSet):
 
 
 class FormView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     authentication_classes = [TokenAuthentication]
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
@@ -59,6 +61,8 @@ class FormView(viewsets.ModelViewSet):
 
 
 class SessionResultView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [TokenAuthentication]
     queryset = SessionResult.objects.all()
     serializer_class = SessionResultSerializer
 
@@ -73,6 +77,8 @@ class SessionResultView(viewsets.ModelViewSet):
 
 
 class PlayerScoreView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [TokenAuthentication]
     queryset = Player.objects.all()
     serializer_class = PlayerScoreSerializer
     filter_backends = [filters.OrderingFilter]
@@ -89,8 +95,8 @@ class PlayerScoreView(viewsets.ModelViewSet):
 
 
 class SessionView(viewsets.ModelViewSet):
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [TokenAuthentication]
 
     queryset = Session.objects.all()
     serializer_class = SessionSerializer

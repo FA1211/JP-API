@@ -14,7 +14,7 @@ from jesuspokerapi import serializers
 class SocialLoginView(generics.GenericAPIView):
     """Log in using facebook"""
     serializer_class = serializers.SocialSerializer
-    #permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         """Authenticate user through the provider and access_token"""
