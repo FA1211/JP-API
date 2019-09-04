@@ -48,7 +48,7 @@ class FormView(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=date)
         serializer.is_valid(raise_exception=True)
         sess = serializer.save()
-        sess.creator = request.user
+        #sess.creator = request.user
         for player_name, scr in players.items():
             plyr, created = Player.objects.get_or_create(name=player_name)
             result = SessionResult.objects.create(player=plyr, result=scr, session=sess)
