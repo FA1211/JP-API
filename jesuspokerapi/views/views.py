@@ -51,7 +51,7 @@ class FormView(viewsets.ModelViewSet):
         sess.creator = request.user
         for player_name, scr in players.items():
             plyr, created = Player.objects.get_or_create(name=player_name)
-            result = SessionResult.objects.create(player=plyr, result=int(scr), session=sess)
+            result = SessionResult.objects.create(player=plyr, result=scr, session=sess)
             result.save()
             plyr.save()
             sess.players.add(plyr)

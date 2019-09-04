@@ -29,4 +29,4 @@ class Session(models.Model):
 class SessionResult(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='sessions')
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='results')
-    result = models.IntegerField(default=0)
+    result = models.DecimalField(max_digits=5,decimal_places=2)
