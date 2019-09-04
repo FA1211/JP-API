@@ -20,7 +20,7 @@ class Session(models.Model):
     date = models.DateField()
     #creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_sessions", null=True )
     players = models.ManyToManyField(Player)
-    balance = models.DecimalField(max_digits=5,decimal_places=2, default=0)
+    balance = models.DecimalField(max_digits=5,decimal_places=2, default=0.00)
 
     def __str__(self):
         return str(self.date)
