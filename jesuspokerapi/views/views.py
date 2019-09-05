@@ -5,17 +5,15 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-from jesuspokerapi.models import Player, Session, SessionResult
+from jesuspokerapi.models import Player, Session, SessionResult, Payment
 from jesuspokerapi.serializers import PlayerSerializer, SessionSerializer, SessionResultSerializer, \
     PlayerScoreSerializer, \
-    PlayerSessionSerializer
+    PlayerSessionSerializer, PlayerCurrentScoreSerializer, PaymentSerializer
 
 
 # Create your views here.
 
 class PlayerView(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
-    #authentication_classes = [TokenAuthentication]
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
 
@@ -30,8 +28,8 @@ class PlayerView(viewsets.ModelViewSet):
 
 
 class FormView(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
-    #authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    # authentication_classes = [TokenAuthentication]
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
@@ -48,7 +46,7 @@ class FormView(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=date)
         serializer.is_valid(raise_exception=True)
         sess = serializer.save()
-        #sess.creator = request.user
+        # sess.creator = request.user
         for player_name, scr in players.items():
             plyr, created = Player.objects.get_or_create(name=player_name)
             result = SessionResult.objects.create(player=plyr, result=scr, session=sess)
@@ -61,8 +59,8 @@ class FormView(viewsets.ModelViewSet):
 
 
 class SessionResultView(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
-    #authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    # authentication_classes = [TokenAuthentication]
     queryset = SessionResult.objects.all()
     serializer_class = SessionResultSerializer
 
@@ -77,8 +75,8 @@ class SessionResultView(viewsets.ModelViewSet):
 
 
 class PlayerScoreView(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
-    #authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    # authentication_classes = [TokenAuthentication]
     queryset = Player.objects.all()
     serializer_class = PlayerScoreSerializer
     filter_backends = [filters.OrderingFilter]
@@ -89,17 +87,29 @@ class PlayerScoreView(viewsets.ModelViewSet):
         try:
             max_player = Player.objects.all().annotate(total_score=Sum('sessions__result')).order_by('-total_score')[0]
         except IndexError:
-            return Response({"error":"Cannot return top player - No players in database"}, status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE)
+            return Response({"error": "Cannot return top player - No players in database"},
+                            status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE)
         serialized = PlayerSessionSerializer(max_player)
         sessions = SessionResultSerializer(max_player.sessions.order_by('session__date').all(), many=True).data
         name = max_player.name
-        return Response({'name':name, 'sessions':sessions}, status=status.HTTP_200_OK)
-        #return Response(serialized.data, status=status.HTTP_200_OK)
+        return Response({'name': name, 'sessions': sessions}, status=status.HTTP_200_OK)
+        # return Response(serialized.data, status=status.HTTP_200_OK)
+
+
+class PlayerCurrentScoreView(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerCurrentScoreSerializer
+    filter_backends = [filters.OrderingFilter]
+
+class PaymentView(viewsets.ModelViewSet):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
 
 
 class SessionView(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticatedOrReadOnly]
-    #authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    # authentication_classes = [TokenAuthentication]
 
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
