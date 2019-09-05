@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^-#*%z2o6zh%+zip-pzk#w2ilyy6=on2xojv-n3#o9#f3hd=a7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -91,10 +91,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = int(env('FB_API_APP_ID'))
-# os.environ.get('FACEBOOK_API_APP_ID')
-SOCIAL_AUTH_FACEBOOK_SECRET = str((env('FB_API_APP_SECRET')))
-# str(os.environ.get('FACEBOOK_API_APP_SECRET'))
+# SOCIAL_AUTH_FACEBOOK_KEY = int(env('FB_API_APP_ID'))
+# SOCIAL_AUTH_FACEBOOK_SECRET = str((env('FB_API_APP_SECRET')))
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from facebook. Email is not sent by default, to get it, you must request the email permission:
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
