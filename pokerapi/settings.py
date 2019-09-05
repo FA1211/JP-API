@@ -117,9 +117,9 @@ WSGI_APPLICATION = 'pokerapi.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-dbusername = env('dbusername')
-dbpass = env('dbpass')
-dbhostname = env('dbhostname')
+# dbusername = env('dbusername')
+# dbpass = env('dbpass')
+# dbhostname = env('dbhostname')
 
 # DATABASES = {
 #     'default': {
