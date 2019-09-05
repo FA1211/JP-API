@@ -13,10 +13,10 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 class SessionResultSerializer(serializers.ModelSerializer):
     player = StringRelatedField(many=False)
-
+    session = SlugRelatedField(many=False, read_only=True, slug_field='date')
     class Meta:
         model = SessionResult
-        fields = ('id', 'player', 'result')
+        fields = ('id', 'player', 'result','session')
 
 
 class SessionSerializer(serializers.ModelSerializer):
