@@ -11,6 +11,7 @@ rtr.register('api/forms', views.FormView)
 rtr.register('api/sessions', views.SessionView)
 rtr.register('api/sessionsresults', views.SessionResultView)
 rtr.register('api/playerscores', views.PlayerScoreView)
+rtr.register('api/scores', views.ScoresView)
 rtr.register('api/playercurrentscores', views.PlayerCurrentScoreView)
 rtr.register('api/payments', views.PaymentView)
 

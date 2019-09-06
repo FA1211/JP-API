@@ -63,6 +63,7 @@ class SessionResultView(viewsets.ModelViewSet):
     # authentication_classes = [TokenAuthentication]
     queryset = SessionResult.objects.all()
     serializer_class = SessionResultSerializer
+    filter_backends = [filters.OrderingFilter]
 
     def create(self, request, pk=None, company_pk=None, project_pk=None):
         is_many = True if isinstance(request.data, list) else False
@@ -80,6 +81,14 @@ class PlayerScoreView(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerScoreSerializer
     filter_backends = [filters.OrderingFilter]
+
+    @action(detail=False)
+    def get_individual(self, request):
+        searched_name = request.GET.get('name')
+        player = Player.objects.filter(name=searched_name).first()
+        print(player.name)
+        sessions = SessionResultSerializer(player.sessions.order_by('session__date').all(), many=True).data
+        return Response({'name': player.name, 'sessions': sessions}, status=status.HTTP_200_OK)
 
     @action(detail=False)
     def get_max(self, request):
@@ -105,6 +114,8 @@ class PaymentView(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
 
+class ScoresView(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
 
 
 class SessionView(viewsets.ModelViewSet):
