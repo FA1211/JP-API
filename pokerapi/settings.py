@@ -15,12 +15,12 @@ import os
 
 
 # Set up environment variables
-env = environ.Env(
+#env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
-)
+#    DEBUG=(bool, False)
+#)
 
-environ.Env.read_env()
+#environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^-#*%z2o6zh%+zip-pzk#w2ilyy6=on2xojv-n3#o9#f3hd=a7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Application definition
 
@@ -66,7 +66,7 @@ MIDDLEWARE = [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'pokerapi.urls'
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['206.189.20.168','*']
 
 
 TEMPLATES = [
@@ -180,3 +180,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
