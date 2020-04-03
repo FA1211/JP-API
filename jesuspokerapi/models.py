@@ -14,6 +14,9 @@ class Player(models.Model):
 
     def get_current_score(self):
         total_score = self.get_total_score()
+        f = open("./log.txt", "a")
+        f.write(self)
+        f.close()
         paid_out = self.payments_paid.aggregate(Sum('amount'))['amount__sum'] or 0
         paid_in = self.payments_received.aggregate(Sum('amount'))['amount__sum'] or 0
         return total_score - paid_in + paid_out
